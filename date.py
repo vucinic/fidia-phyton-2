@@ -14,18 +14,28 @@ class Data:
     def get_m(self):
         return self.__m
 
-
-
     def diff(self, other):
         """
         :param other: controlla che sia di tipo Data e se tipo data fa differenza in giorni self - other
         :return: differenza in giorni
         """
-        pass
+        if not isinstance(other, Data):
+            raise Exception('other tdeve essere una Data')
+
+        a_diff = self.__a - other.__a
+        return a_diff
 
     def epoch_time(self):
         """
         :return: numero di secondi dal 1/1/1970
         """
         pass
+
+
+a = Data(1, 1, 2023)
+b = Data(1, 1, 1000)
+
+print(a.diff(b))
+print(b.diff(a))
+
 
