@@ -14,3 +14,18 @@ class Data:
     def get_m(self):
         return self.__m
 
+
+
+    def diff(self, other):
+        """
+        :param other: controlla che sia di tipo Data e se tipo data fa differenza in giorni self - other
+        :return: differenza in giorni
+        """
+        pass
+
+    def epoch_time(self):
+        """
+        :return: numero di secondi dal 1/1/1970
+        """
+        pass
+
