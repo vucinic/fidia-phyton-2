@@ -1,9 +1,16 @@
 class Vehicle:
+    __vehicles_count = 0
+
+    @classmethod
+    def get_vehicles_count(cls):
+        return cls.__vehicles_count
 
     def __init__(self, x: float = 0.0, y: float = 0.0):
         self.__x: float = x
         self.__y: float = y
+        self._z: float = 0
         self.__time: float = 0.0
+        Vehicle.__vehicles_count += 1
 
     def get_position(self) -> (float, float):
         return self.__x, self.__y
@@ -17,20 +24,11 @@ class Vehicle:
     def get_time(self) -> float:
         return self.__time
 
-
-v = Vehicle()
-print(v.get_position())
-v.move(1, 1, 1)
-print(v.get_position())
-print(v.get_time())
+    def get_X(self):
+        return self.__x
+    def get_Z(self):
+        return self._z
 
 
-v2 = Vehicle()
-print(v2.get_position())
-v2.move(10, 10, 50)
-print(v2.get_position())
-print(v2.get_time())
 
-pos = v.get_position()
-print(pos)
-print(v.get_time())
+

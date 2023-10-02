@@ -2,6 +2,10 @@
 class Persona:
     __tot_persone = 0
 
+    @classmethod
+    def set_tot_persone(cls, tot: int):
+        cls.__tot_persone = tot
+
     def __init__(self, nome, eta):
         Persona.__tot_persone += 1
         self.nome = nome
@@ -14,11 +18,11 @@ class Persona:
         print(f"Ciao, il mio nome è {self.nome} e ho {self.eta} anni.")
 
 
-print(Persona.__tot_persone)
-
 p = Persona('Mario', 58)
 
-print(Persona.__tot_persone)
-print(p.__tot_persone)
 
+p.saluto()
 print(p.nome)
+
+
+Persona.set_tot_persone(1000)
