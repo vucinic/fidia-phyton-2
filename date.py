@@ -31,6 +31,13 @@ class Data:
         """
         pass
 
+    def __del__(self):
+        print("Elimino oggetto " +
+              str(self.__g) + ' ' +
+              str(self.__m) + ' ' +
+              str(self.__a)
+              )
+
 
 a = Data(1, 1, 2023)
 b = Data(1, 1, 1000)
@@ -39,3 +46,4 @@ print(a.diff(b))
 print(b.diff(a))
 
 
+# print(a.diff(b))
