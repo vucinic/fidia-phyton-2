@@ -5,7 +5,7 @@ class Vehicle:
         self.__y: float = y
         self.__time: float = 0.0
 
-    def get_position(self) -> tuple[float, float]:
+    def get_position(self) -> (float, float):
         return self.__x, self.__y
 
     def move(self, new_x, new_y, vel):
