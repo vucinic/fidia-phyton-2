@@ -1,23 +1,75 @@
-class Person(object):
-
-    def __init__(self, name: str, lastname, height=0.0, size='M'):
-        self.__name = name
-        self.__lastname = lastname
-        self.__height = height
-
-    def display(self):
-        print(self.__name)
-        print(self.__lastname)
+from abc import ABC, abstractmethod
 
 
-class Employee(Person):
+class Processable(ABC):
 
-    def __init__(self, fullname: str, salary: float, children):
-        super().__init__(fullname.split(" ")[0], fullname.split(" ")[1])
-        # Person.__init__(self, name, idnumber)
-        self.__salary = salary
+    @abstractmethod
+    def _extract(self):
+        pass
+
+    @abstractmethod
+    def _transform(self):
+        pass
+
+    @abstractmethod
+    def _adapt(self):
+        pass
+
+    @abstractmethod
+    def _save(self):
+        pass
+
+    def process(self):
+        self._extract()
+        self._transform()
+        self._adapt()
+        self._save()
 
 
-person = Employee("mario rossi", 25000)
-Person()
-print()
+class TxtProcessor(Processable):
+
+    def __init__(self, in_path: str):
+        self.__filename = in_path
+        self.__file = None
+
+    def _extract(self):
+        self.__file = open(self.__filename)
+
+    def _transform(self):
+        pass
+
+    def _adapt(self):
+        pass
+
+    def _save(self):
+        pass
+
+
+class CsvProcessor(Processable):
+
+    def __init__(self, in_path: str):
+        self.__filename = in_path
+        self.__file = None
+
+    def _extract(self):
+        self.__file = open(self.__filename)
+
+    def _transform(self):
+        pass
+
+    def _adapt(self):
+        pass
+
+    def _save(self):
+        pass
+
+
+def process_all(all: list[Processable]):
+    for i in all:
+        i.process()
+
+
+t_proc = TxtProcessor('in.txt')
+c_proc = CsvProcessor('in.csv')
+
+process_all([t_proc, c_proc])
