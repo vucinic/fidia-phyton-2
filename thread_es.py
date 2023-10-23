@@ -24,8 +24,3 @@ t2.join()
 
 print('Tutto finito')
 
-
-routine(**{'name': 't2', 'time': 0})
-routine(name='t2', time=0)
-routine('t2', 0)
-
