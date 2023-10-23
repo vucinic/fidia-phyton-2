@@ -1,5 +1,6 @@
+
 from vehicle import Vehicle
-from my_package.points import Point
+
 
 if __name__ == '__main__':
     print('1)', Vehicle.get_vehicles_count())
@@ -14,6 +15,8 @@ if __name__ == '__main__':
     v.z = 100
     print(v.z)
     print(v.get_Z())
+
+    Point()
 
 
 

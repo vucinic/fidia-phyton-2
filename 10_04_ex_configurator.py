@@ -38,21 +38,43 @@ class ElettroMandrino(Part):
         self.__serial = serial
 
 
+class SerialBus(ABC):
+
+    @abstractmethod
+    def open_communication(self):
+        pass
+
+    @abstractmethod
+    def write_bytes(self, buffer: bytes):
+        pass
+
+    @abstractmethod
+    def read_bytes(self) -> bytes:
+        pass
+
+    @abstractmethod
+    def close_communication(self):
+        pass
+
+
 class Machine(ABC):
 
-    def __init__(self):
-        self._parts = list()
+    @abstractmethod
+    def get_serial_bus(self) -> SerialBus:
+        pass
 
     @abstractmethod
     def add_part(self, p: Part):
         pass
 
+    @abstractmethod
     def print(self):
-        print('-----------')
-        for p in self._parts:
-            print(p.get_serial_number(), end=' ')
-            print(p.get_part_number())
-        print('-----------')
+        pass
+        # print('-----------')
+        # for p in self._parts:
+        #     print(p.get_serial_number(), end=' ')
+        #     print(p.get_part_number())
+        # print('-----------')
 
 
 class GtfPartError(Exception):
@@ -60,6 +82,16 @@ class GtfPartError(Exception):
 
 
 class Gtf(Machine):
+
+    def get_serial_bus(self) -> SerialBus:
+        return self.__serial_bus
+
+    def __init__(self):
+        self.__parts_left = list()
+        self.__parts_right = list()
+
+    def print(self):
+        pass
 
     def add_part(self, p: Part):
         if not p.get_serial_number().startswith("900"):
@@ -75,18 +107,26 @@ class K211(Machine):
 
 def add_part_to_all(p: Part, machines: list[Machine]):
     for machine in machines:
-        machine.add_part(p)
+        try:
+            machine.add_part(p)
+        except GtfPartError as e:
+            print('Error while adding part:', e)
+        except Exception:
+            print("Generic Error")
 
 
-m: Machine = K211()
-m1: Machine = Gtf()
+m_k211: Machine = K211()
+m_gtf: Machine = Gtf()
+mm = Machine()
 
-add_part_to_all(Tavola("900011211#p343"), [m, m1])
-add_part_to_all(ElettroMandrino("s9001211", "p343"), [m, m1])
+m_gtf.get_serial_bus().open_communication()
+m_gtf.get_serial_bus().write_bytes(bytes('ciao'))
+
+add_part_to_all(Tavola("900011211#p343"), [m_k211, m_gtf])
+add_part_to_all(ElettroMandrino("s9001211", "p343"), [m_k211, m_gtf])
 
 print("m")
-m.print()
+m_k211.print()
 
 print("m1")
-m1.print()
-
+m_gtf.print()

@@ -1,3 +1,5 @@
+
+
 class Vehicle:
     __vehicles_count = 0
 
