@@ -1,19 +1,17 @@
-from threading import Lock, Thread, RLock
+from threading import Thread, RLock
 
 lock = RLock()
 
 
 def t():
-    lock.acquire()
-    print('t1')
-    t2()
-    lock.release()
+    with lock:
+        print('t1')
+        t2()
 
 
 def t2():
-    lock.acquire()
-    print('t2')
-    lock.release()
+    with lock:
+        print('t2')
 
 
 Thread(target=t).start()
