@@ -11,6 +11,8 @@ class BlockingQueue:
     def get(self):
         """
         blocca se non ci sono elementi
+
+        se la coda è chiusa ritorna None
         :return:
         """
         pass
@@ -20,6 +22,8 @@ class BlockingQueue:
         blocca se qualcuno sta leggendo un elemento,
         blocca se la coda è piena,
         inserisce l'elemento nella coda
+
+        se la coda è chiusa ritorna False altrimenti True
         :param el:
         :return:
         """
