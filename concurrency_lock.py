@@ -1,4 +1,5 @@
 from threading import Thread, Lock
+from time import sleep
 
 s = """Nel mezzo del cammin di nostra vita
 mi ritrovai per una selva oscura,
@@ -16,6 +17,8 @@ def func(name, args):
             args['current_index'] += 1
         else:
             is_finished = True
+
+        sleep(100)
         g_lock.release()
 
 
