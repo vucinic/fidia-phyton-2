@@ -21,7 +21,7 @@ class BlockingQueue:
             return None
 
         with self.__not_empty_condition:
-            if len(self.__buffer) == 0:
+            while len(self.__buffer) == 0 and self.__open:
                 self.__not_empty_condition.wait()
 
         if not self.__open:
@@ -47,8 +47,11 @@ class BlockingQueue:
             return False
 
         with self.__not_full_condition:
-            if len(self.__buffer) == self.max_size:
+            while len(self.__buffer) == self.max_size and self.__open:
                 self.__not_full_condition.wait()
+
+        if not self.__open:
+            return False
 
         with self.__not_empty_condition:
             self.__buffer.append(el)
@@ -60,6 +63,12 @@ class BlockingQueue:
         return self.__open
 
     def close(self):
+        with self.__not_full_condition:
+            self.__not_full_condition.notify_all()
+
+        with self.__not_empty_condition:
+            self.__not_empty_condition.notify_all()
+
         self.__open = False
 
     def __str__(self):
@@ -69,12 +78,20 @@ class BlockingQueue:
 def insert(q: BlockingQueue, n: int, prefix: str):
     for i in range(n):
         print(prefix, 'insert', 1)
-        q.put(i)
+        if not q.put(1):
+            return
 
 
 def extract(q: BlockingQueue, prefix: str):
+    i = 0
     while q.is_open():
-        print(prefix, q.get())
+        v = q.get()
+        if v is None:
+            print(prefix, 'coda chiusa, termino')
+            break
+        print(prefix, v)
+        i += v
+    print(prefix, ' total', i)
 
 
 def real_main():
@@ -91,7 +108,7 @@ def real_main():
     ti2.start()
     ti3.start()
 
-    sleep(10)
+    sleep(3)
     q.close()
 
     te1.join()
