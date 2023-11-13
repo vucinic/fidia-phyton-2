@@ -24,6 +24,9 @@ class BlockingQueue:
             if len(self.__buffer) == 0:
                 self.__not_empty_condition.wait()
 
+        if not self.__open:
+            return None
+
         with self.__not_full_condition:
             ret = self.__buffer.pop(0)
             self.__not_full_condition.notify_all()
