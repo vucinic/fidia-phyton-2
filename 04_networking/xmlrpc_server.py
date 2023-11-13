@@ -9,8 +9,8 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/fidia-rpc',)
 
 
-def adder_function(x, y):
-    return x + y
+def adder_function(*args):
+    return sum(args)
 
 
 class MyFuncs:
@@ -19,7 +19,12 @@ class MyFuncs:
 
 
 def today():
+    """
+    This method return the current date
+    :return:
+    """
     now = datetime.datetime.today()
+    print(now)
     return xmlrpc.client.DateTime(now)
 
 
@@ -28,11 +33,16 @@ def python_logo():
         return xmlrpc.client.Binary(handle.read())
 
 
+
 # Create server
 with SimpleXMLRPCServer(
         ('localhost', 8000),
-        requestHandler=RequestHandler) as server:
+        requestHandler=RequestHandler,
+        logRequests=True) as server:
     server.register_introspection_functions()
+
+    print(today())
+
 
     # Register pow() function; this will use the value of
     # pow.__name__ as the name, which is just 'pow'.

@@ -1,4 +1,5 @@
-from threading import Thread, Condition
+import threading
+from threading import Thread
 from time import sleep
 
 
@@ -8,8 +9,8 @@ class BlockingQueue:
         self.max_size = max_size
         self.__open = True
         self.__buffer = list()
-        self.__not_empty_condition = Condition()
-        self.__not_full_condition = Condition()
+        self.__not_empty_condition = threading.Condition()
+        self.__not_full_condition = threading.Condition()
 
     def get(self):
         """
@@ -29,7 +30,7 @@ class BlockingQueue:
 
         with self.__not_full_condition:
             ret = self.__buffer.pop(0)
-            self.__not_full_condition.notify_all()
+            self.__not_full_condition.notify()
 
         return ret
 
@@ -55,7 +56,7 @@ class BlockingQueue:
 
         with self.__not_empty_condition:
             self.__buffer.append(el)
-            self.__not_empty_condition.notify_all()
+            self.__not_empty_condition.notify()
 
         return True
 
@@ -64,12 +65,10 @@ class BlockingQueue:
 
     def close(self):
         with self.__not_full_condition:
-            self.__not_full_condition.notify_all()
-
-        with self.__not_empty_condition:
-            self.__not_empty_condition.notify_all()
-
-        self.__open = False
+            with self.__not_empty_condition:
+                self.__open = False
+                self.__not_full_condition.notify_all()
+                self.__not_empty_condition.notify_all()
 
     def __str__(self):
         return str(self.__buffer)
