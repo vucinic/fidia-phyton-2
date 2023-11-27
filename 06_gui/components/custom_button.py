@@ -17,9 +17,12 @@ class CustomLabel(QLabel):
 
     def __init__(self):
         super().__init__()
-
         font = QFont()
         font.setBold(True)
         font.setPixelSize(24)
         font.setFamilies('Comic Sans')
         self.setFont(font)
+
+
+
+global_label = CustomLabel()
